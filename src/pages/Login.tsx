@@ -43,25 +43,44 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ backgroundColor: `rgb(var(--theme-background))` }}
+    >
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="h-12 w-12 rounded-lg gradient-primary flex items-center justify-center">
+            <div 
+              className="h-12 w-12 rounded-lg flex items-center justify-center"
+              style={{
+                background: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+              }}
+            >
               <CheckSquare className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          <h1 
+            className="text-3xl font-bold bg-clip-text text-transparent"
+            style={{
+              backgroundImage: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+            }}
+          >
             TaskFlow
           </h1>
-          <p className="text-muted-foreground mt-2">Sign in to your account</p>
+          <p className="text-[rgb(var(--theme-text-secondary))] mt-2">Sign in to your account</p>
         </div>
 
-        <Card className="glass-card border-white/20">
+        <Card 
+          className="border shadow-lg"
+          style={{
+            backgroundColor: `rgb(var(--theme-surface))`,
+            borderColor: `rgb(var(--theme-border))`
+          }}
+        >
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Sign In</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-2xl text-center text-[rgb(var(--theme-text))]">Sign In</CardTitle>
+            <CardDescription className="text-center text-[rgb(var(--theme-text-secondary))]">
               Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
@@ -69,15 +88,20 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-[rgb(var(--theme-text))]">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    className="pl-10 glass-card border-white/20"
+                    className="pl-10"
+                    style={{
+                      backgroundColor: `rgb(var(--theme-surface))`,
+                      borderColor: `rgb(var(--theme-border))`,
+                      color: `rgb(var(--theme-text))`
+                    }}
                     placeholder="john@example.com"
                     required
                   />
@@ -85,15 +109,20 @@ export default function Login() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-[rgb(var(--theme-text))]">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="password"
                     type="password"
                     value={formData.password}
                     onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                    className="pl-10 glass-card border-white/20"
+                    className="pl-10"
+                    style={{
+                      backgroundColor: `rgb(var(--theme-surface))`,
+                      borderColor: `rgb(var(--theme-border))`,
+                      color: `rgb(var(--theme-text))`
+                    }}
                     placeholder="password"
                     required
                   />
@@ -103,7 +132,8 @@ export default function Login() {
               <div className="flex items-center justify-between">
                 <Link
                   to="/forgot-password"
-                  className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                  className="text-sm transition-colors"
+                  style={{ color: `rgb(var(--theme-primary))` }}
                 >
                   Forgot password?
                 </Link>
@@ -113,17 +143,21 @@ export default function Login() {
             <CardFooter className="flex flex-col space-y-4">
               <Button
                 type="submit"
-                className="w-full gradient-primary"
+                className="w-full text-white"
+                style={{
+                  background: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+                }}
                 disabled={isLoading}
               >
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
               
-              <p className="text-center text-sm text-muted-foreground">
+              <p className="text-center text-sm text-[rgb(var(--theme-text-secondary))]">
                 Don't have an account?{" "}
                 <Link
                   to="/register"
-                  className="text-purple-400 hover:text-purple-300 transition-colors"
+                  className="transition-colors"
+                  style={{ color: `rgb(var(--theme-primary))` }}
                 >
                   Sign up
                 </Link>
@@ -133,7 +167,7 @@ export default function Login() {
         </Card>
 
         {/* Demo credentials */}
-        <div className="text-center text-sm text-muted-foreground">
+        <div className="text-center text-sm text-[rgb(var(--theme-text-secondary))]">
           <p>Demo credentials:</p>
           <p>Email: john@example.com</p>
           <p>Password: password</p>

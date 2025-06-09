@@ -12,83 +12,118 @@ export default function Settings() {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <h1 className="text-3xl font-bold">Settings</h1>
+      <h1 className="text-3xl font-bold text-[rgb(var(--theme-text))]">Settings</h1>
 
       {/* Profile Settings */}
-      <Card className="glass-card border-white/10">
+      <Card 
+        className="shadow-sm border"
+        style={{
+          backgroundColor: `rgb(var(--theme-surface))`,
+          borderColor: `rgb(var(--theme-border))`
+        }}
+      >
         <CardHeader>
-          <CardTitle>Profile Settings</CardTitle>
+          <CardTitle className="text-[rgb(var(--theme-text))]">Profile Settings</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName">First Name</Label>
+              <Label htmlFor="firstName" className="text-[rgb(var(--theme-text))]">First Name</Label>
               <Input
                 id="firstName"
                 defaultValue={user?.name?.split(' ')[0] || ''}
-                className="glass-card border-white/20"
+                style={{
+                  backgroundColor: `rgb(var(--theme-surface))`,
+                  borderColor: `rgb(var(--theme-border))`,
+                  color: `rgb(var(--theme-text))`
+                }}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name</Label>
+              <Label htmlFor="lastName" className="text-[rgb(var(--theme-text))]">Last Name</Label>
               <Input
                 id="lastName"
                 defaultValue={user?.name?.split(' ')[1] || ''}
-                className="glass-card border-white/20"
+                style={{
+                  backgroundColor: `rgb(var(--theme-surface))`,
+                  borderColor: `rgb(var(--theme-border))`,
+                  color: `rgb(var(--theme-text))`
+                }}
               />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-[rgb(var(--theme-text))]">Email</Label>
             <Input
               id="email"
               type="email"
               defaultValue={user?.email || ''}
-              className="glass-card border-white/20"
+              style={{
+                backgroundColor: `rgb(var(--theme-surface))`,
+                borderColor: `rgb(var(--theme-border))`,
+                color: `rgb(var(--theme-text))`
+              }}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
+            <Label htmlFor="role" className="text-[rgb(var(--theme-text))]">Role</Label>
             <Input
               id="role"
               defaultValue={user?.role || ''}
-              className="glass-card border-white/20"
+              style={{
+                backgroundColor: `rgb(var(--theme-surface))`,
+                borderColor: `rgb(var(--theme-border))`,
+                color: `rgb(var(--theme-text))`
+              }}
             />
           </div>
-          <Button className="gradient-primary">Save Changes</Button>
+          <Button 
+            className="text-white"
+            style={{
+              background: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+            }}
+          >
+            Save Changes
+          </Button>
         </CardContent>
       </Card>
 
       {/* Notifications */}
-      <Card className="glass-card border-white/10">
+      <Card 
+        className="shadow-sm border"
+        style={{
+          backgroundColor: `rgb(var(--theme-surface))`,
+          borderColor: `rgb(var(--theme-border))`
+        }}
+      >
         <CardHeader>
-          <CardTitle>Notifications</CardTitle>
+          <CardTitle className="text-[rgb(var(--theme-text))]">Notifications</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label>Email Notifications</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label className="text-[rgb(var(--theme-text))]">Email Notifications</Label>
+              <p className="text-sm text-[rgb(var(--theme-text-secondary))]">
                 Receive notifications via email
               </p>
             </div>
             <Switch defaultChecked />
           </div>
-          <Separator className="bg-white/20" />
+          <Separator style={{ backgroundColor: `rgb(var(--theme-border))` }} />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label>Task Reminders</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label className="text-[rgb(var(--theme-text))]">Task Reminders</Label>
+              <p className="text-sm text-[rgb(var(--theme-text-secondary))]">
                 Get reminded about upcoming deadlines
               </p>
             </div>
             <Switch defaultChecked />
           </div>
-          <Separator className="bg-white/20" />
+          <Separator style={{ backgroundColor: `rgb(var(--theme-border))` }} />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <Label>Weekly Reports</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label className="text-[rgb(var(--theme-text))]">Weekly Reports</Label>
+              <p className="text-sm text-[rgb(var(--theme-text-secondary))]">
                 Receive weekly progress reports
               </p>
             </div>
@@ -98,15 +133,33 @@ export default function Settings() {
       </Card>
 
       {/* Security */}
-      <Card className="glass-card border-white/10">
+      <Card 
+        className="shadow-sm border"
+        style={{
+          backgroundColor: `rgb(var(--theme-surface))`,
+          borderColor: `rgb(var(--theme-border))`
+        }}
+      >
         <CardHeader>
-          <CardTitle>Security</CardTitle>
+          <CardTitle className="text-[rgb(var(--theme-text))]">Security</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button variant="outline" className="border-white/20">
+          <Button 
+            variant="outline" 
+            style={{ 
+              borderColor: `rgb(var(--theme-border))`,
+              color: `rgb(var(--theme-text))`
+            }}
+          >
             Change Password
           </Button>
-          <Button variant="outline" className="border-white/20">
+          <Button 
+            variant="outline"
+            style={{ 
+              borderColor: `rgb(var(--theme-border))`,
+              color: `rgb(var(--theme-text))`
+            }}
+          >
             Enable Two-Factor Authentication
           </Button>
         </CardContent>

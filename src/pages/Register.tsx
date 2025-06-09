@@ -15,7 +15,7 @@ export default function Register() {
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: ""
@@ -28,7 +28,7 @@ export default function Register() {
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Password mismatch",
-        description: "Passwords do not match. Please try again.",
+        description: "Passwords do not match",
         variant: "destructive"
       });
       return;
@@ -37,7 +37,7 @@ export default function Register() {
     setIsLoading(true);
     
     try {
-      await register(formData.name, formData.email, formData.password);
+      await register(formData.email, formData.password, formData.fullName);
       toast({
         title: "Account created!",
         description: "Your account has been created successfully.",
@@ -46,7 +46,7 @@ export default function Register() {
     } catch (error) {
       toast({
         title: "Registration failed",
-        description: "Something went wrong. Please try again.",
+        description: "Failed to create account. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -55,25 +55,44 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ backgroundColor: `rgb(var(--theme-background))` }}
+    >
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="h-12 w-12 rounded-lg gradient-primary flex items-center justify-center">
+            <div 
+              className="h-12 w-12 rounded-lg flex items-center justify-center"
+              style={{
+                background: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+              }}
+            >
               <CheckSquare className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          <h1 
+            className="text-3xl font-bold bg-clip-text text-transparent"
+            style={{
+              backgroundImage: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+            }}
+          >
             TaskFlow
           </h1>
-          <p className="text-muted-foreground mt-2">Create your account</p>
+          <p className="text-[rgb(var(--theme-text-secondary))] mt-2">Create your account</p>
         </div>
 
-        <Card className="glass-card border-white/20">
+        <Card 
+          className="border shadow-lg"
+          style={{
+            backgroundColor: `rgb(var(--theme-surface))`,
+            borderColor: `rgb(var(--theme-border))`
+          }}
+        >
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-2xl text-center text-[rgb(var(--theme-text))]">Sign Up</CardTitle>
+            <CardDescription className="text-center text-[rgb(var(--theme-text-secondary))]">
               Create an account to get started
             </CardDescription>
           </CardHeader>
@@ -81,15 +100,20 @@ export default function Register() {
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="fullName" className="text-[rgb(var(--theme-text))]">Full Name</Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <User className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
-                    id="name"
+                    id="fullName"
                     type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="pl-10 glass-card border-white/20"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                    className="pl-10"
+                    style={{
+                      backgroundColor: `rgb(var(--theme-surface))`,
+                      borderColor: `rgb(var(--theme-border))`,
+                      color: `rgb(var(--theme-text))`
+                    }}
                     placeholder="John Doe"
                     required
                   />
@@ -97,15 +121,20 @@ export default function Register() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-[rgb(var(--theme-text))]">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    className="pl-10 glass-card border-white/20"
+                    className="pl-10"
+                    style={{
+                      backgroundColor: `rgb(var(--theme-surface))`,
+                      borderColor: `rgb(var(--theme-border))`,
+                      color: `rgb(var(--theme-text))`
+                    }}
                     placeholder="john@example.com"
                     required
                   />
@@ -113,15 +142,20 @@ export default function Register() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-[rgb(var(--theme-text))]">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="password"
                     type="password"
                     value={formData.password}
                     onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                    className="pl-10 glass-card border-white/20"
+                    className="pl-10"
+                    style={{
+                      backgroundColor: `rgb(var(--theme-surface))`,
+                      borderColor: `rgb(var(--theme-border))`,
+                      color: `rgb(var(--theme-text))`
+                    }}
                     placeholder="Password"
                     required
                   />
@@ -129,15 +163,20 @@ export default function Register() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-[rgb(var(--theme-text))]">Confirm Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="confirmPassword"
                     type="password"
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                    className="pl-10 glass-card border-white/20"
+                    className="pl-10"
+                    style={{
+                      backgroundColor: `rgb(var(--theme-surface))`,
+                      borderColor: `rgb(var(--theme-border))`,
+                      color: `rgb(var(--theme-text))`
+                    }}
                     placeholder="Confirm Password"
                     required
                   />
@@ -148,17 +187,21 @@ export default function Register() {
             <CardFooter className="flex flex-col space-y-4">
               <Button
                 type="submit"
-                className="w-full gradient-primary"
+                className="w-full text-white"
+                style={{
+                  background: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+                }}
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Create Account"}
+                {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
               
-              <p className="text-center text-sm text-muted-foreground">
+              <p className="text-center text-sm text-[rgb(var(--theme-text-secondary))]">
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-purple-400 hover:text-purple-300 transition-colors"
+                  className="transition-colors"
+                  style={{ color: `rgb(var(--theme-primary))` }}
                 >
                   Sign in
                 </Link>
