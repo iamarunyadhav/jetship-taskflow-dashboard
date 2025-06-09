@@ -10,7 +10,8 @@ import {
   User,
   LogOut,
   CheckSquare,
-  Users
+  Users,
+  Palette
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -26,14 +27,9 @@ const menuItems = [
     href: "/tasks"
   },
   {
-    title: "Projects",
-    icon: Calendar,
-    href: "/projects"
-  },
-  {
-    title: "Team",
-    icon: Users,
-    href: "/team"
+    title: "Elements",
+    icon: Palette,
+    href: "/elements"
   },
   {
     title: "Settings",
@@ -47,14 +43,24 @@ export function Sidebar() {
   const { logout } = useAuthStore();
 
   return (
-    <div className="flex h-full w-64 flex-col glass-card border-r border-white/10">
+    <div className="flex h-full w-64 flex-col bg-[rgb(var(--theme-surface))] border-r border-[rgb(var(--theme-border))] shadow-lg">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b border-white/10 px-6">
+      <div className="flex h-16 items-center border-b border-[rgb(var(--theme-border))] px-6">
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
+          <div 
+            className="h-8 w-8 rounded-lg flex items-center justify-center"
+            style={{
+              background: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+            }}
+          >
             <CheckSquare className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          <span 
+            className="text-xl font-bold bg-clip-text text-transparent"
+            style={{
+              backgroundImage: `linear-gradient(135deg, rgb(var(--theme-primary)), rgb(var(--theme-secondary)))`
+            }}
+          >
             TaskFlow
           </span>
         </div>
@@ -68,10 +74,10 @@ export function Sidebar() {
             return (
               <Button
                 key={item.href}
-                variant={isActive ? "secondary" : "ghost"}
+                variant="ghost"
                 className={cn(
-                  "w-full justify-start h-12 px-4",
-                  isActive && "gradient-primary text-white hover:text-white"
+                  "w-full justify-start h-12 px-4 text-[rgb(var(--theme-text))] hover:bg-[rgb(var(--theme-primary))]/10",
+                  isActive && "bg-[rgb(var(--theme-primary))] text-white hover:bg-[rgb(var(--theme-primary))]/90"
                 )}
                 asChild
               >
@@ -86,10 +92,10 @@ export function Sidebar() {
       </ScrollArea>
 
       {/* User Profile & Logout */}
-      <div className="border-t border-white/10 p-4">
+      <div className="border-t border-[rgb(var(--theme-border))] p-4">
         <Button
           variant="ghost"
-          className="w-full justify-start h-12 px-4 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+          className="w-full justify-start h-12 px-4 text-[rgb(var(--theme-error))] hover:text-[rgb(var(--theme-error))] hover:bg-[rgb(var(--theme-error))]/10"
           onClick={logout}
         >
           <LogOut className="mr-3 h-5 w-5" />
