@@ -1,3 +1,4 @@
+// src/pages/Register.tsx
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,18 +14,22 @@ export default function Register() {
   const navigate = useNavigate();
   const { register } = useAuthStore();
   const { toast } = useToast();
-  
+
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "", // Backend expects "name"
     email: "",
     password: "",
     confirmPassword: ""
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Password mismatch",
@@ -35,18 +40,20 @@ export default function Register() {
     }
 
     setIsLoading(true);
-    
+
     try {
-      await register(formData.email, formData.password, formData.fullName);
+      await register(formData.name, formData.email, formData.password);
       toast({
         title: "Account created!",
         description: "Your account has been created successfully.",
       });
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Registration failed",
-        description: "Failed to create account. Please try again.",
+        description:
+          error?.response?.data?.message ||
+          "Failed to create account. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -100,14 +107,15 @@ export default function Register() {
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-[rgb(var(--theme-text))]">Full Name</Label>
+                <Label htmlFor="name" className="text-[rgb(var(--theme-text))]">Full Name</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
-                    id="fullName"
+                    id="name"
+                    name="name"
                     type="text"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                    value={formData.name}
+                    onChange={handleChange}
                     className="pl-10"
                     style={{
                       backgroundColor: `rgb(var(--theme-surface))`,
@@ -126,9 +134,10 @@ export default function Register() {
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={handleChange}
                     className="pl-10"
                     style={{
                       backgroundColor: `rgb(var(--theme-surface))`,
@@ -147,9 +156,10 @@ export default function Register() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="password"
+                    name="password"
                     type="password"
                     value={formData.password}
-                    onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                    onChange={handleChange}
                     className="pl-10"
                     style={{
                       backgroundColor: `rgb(var(--theme-surface))`,
@@ -168,9 +178,10 @@ export default function Register() {
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-[rgb(var(--theme-text-secondary))]" />
                   <Input
                     id="confirmPassword"
+                    name="confirmPassword"
                     type="password"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                    onChange={handleChange}
                     className="pl-10"
                     style={{
                       backgroundColor: `rgb(var(--theme-surface))`,

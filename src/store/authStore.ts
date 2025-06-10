@@ -1,44 +1,52 @@
+// src/store/authStore.ts
+import { create } from "zustand";
+import { login as apiLogin, register as apiRegister } from "@/services/api";
+import { User } from "../types";
 
-import { create } from 'zustand';
-import { AuthState, User } from '../types';
-
-// Mock users for demo
-const mockUsers: User[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: '',
-    role: 'Project Manager'
-  }
-];
+type AuthState = {
+  user: User | null;
+  isAuthenticated: boolean;
+  setAuthenticated: (auth: boolean) => void;
+  login: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
+  logout: () => void;
+  initAuth: () => void;
+};
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("token"),
+  setAuthenticated: (auth) => set({ isAuthenticated: auth }),
   
-  login: async (email: string, password: string) => {
-    // Mock login - in real app, this would be an API call
-    const user = mockUsers.find(u => u.email === email);
-    if (user && password === 'password') {
-      set({ user, isAuthenticated: true });
-    } else {
-      throw new Error('Invalid credentials');
-    }
+  login: async (email, password) => {
+    const res = await apiLogin({ email, password });
+    const { token, user } = res.data;
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    set({ user, isAuthenticated: true });
   },
-  
-  register: async (name: string, email: string, password: string) => {
-    // Mock registration
-    const newUser: User = {
-      id: Date.now().toString(),
+
+  register: async (name, email, password) => {
+    const res = await apiRegister({
       name,
       email,
-      role: 'Team Member'
-    };
-    set({ user: newUser, isAuthenticated: true });
+      password,
+      password_confirmation: password,
+    });
+    const user = res.data.user || res.data.data || { name, email };
+    set({ user, isAuthenticated: true });
   },
-  
+
   logout: () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     set({ user: null, isAuthenticated: false });
-  }
+  },
+
+  initAuth: () => {
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+    set({ user, isAuthenticated: !!token });
+  },
 }));

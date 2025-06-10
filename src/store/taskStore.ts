@@ -1,59 +1,31 @@
-
 import { create } from 'zustand';
-import { TaskState, Task } from '../types';
+import * as api from '@/services/api';
+import { Task } from '@/types';
 
-// Mock data
-const mockTasks: Task[] = [
-  {
-    id: '1',
-    title: 'Design landing page',
-    description: 'Create wireframes and mockups for the new landing page',
-    dueDate: '2024-06-15',
-    status: 'in-progress',
-    assignedTo: 'Alice Johnson',
-    priority: 'high',
-    createdAt: '2024-06-01'
-  },
-  {
-    id: '2',
-    title: 'Implement user authentication',
-    description: 'Set up login/register functionality with JWT',
-    dueDate: '2024-06-20',
-    status: 'pending',
-    assignedTo: 'Bob Smith',
-    priority: 'medium',
-    createdAt: '2024-06-02'
-  },
-  {
-    id: '3',
-    title: 'Write API documentation',
-    description: 'Document all endpoints for the REST API',
-    dueDate: '2024-06-10',
-    status: 'completed',
-    assignedTo: 'Carol Davis',
-    priority: 'low',
-    createdAt: '2024-05-25'
-  }
-];
+type State = {
+  tasks: Task[];
+  fetchTasks: () => Promise<void>;
+  addTask: (data: Partial<Task>) => Promise<void>;
+  updateTask: (id: number, data: Partial<Task>) => Promise<void>;
+  deleteTask: (id: number) => Promise<void>;
+};
 
-export const useTaskStore = create<TaskState>((set) => ({
-  tasks: mockTasks,
-  
-  addTask: (task) => set((state) => ({
-    tasks: [...state.tasks, {
-      ...task,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString().split('T')[0]
-    }]
-  })),
-  
-  updateTask: (id, updatedTask) => set((state) => ({
-    tasks: state.tasks.map(task => 
-      task.id === id ? { ...task, ...updatedTask } : task
-    )
-  })),
-  
-  deleteTask: (id) => set((state) => ({
-    tasks: state.tasks.filter(task => task.id !== id)
-  }))
+export const useTaskStore = create<State>((set, get) => ({
+  tasks: [],
+  fetchTasks: async () => {
+    const res = await api.getTasks();
+    set({ tasks: res.data });
+  },
+  addTask: async (data) => {
+    await api.createTask(data);
+    await get().fetchTasks();
+  },
+  updateTask: async (id, data) => {
+    await api.updateTask(id, data);
+    await get().fetchTasks();
+  },
+  deleteTask: async (id) => {
+    await api.deleteTask(id);
+    await get().fetchTasks();
+  },
 }));
